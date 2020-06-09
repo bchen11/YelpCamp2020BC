@@ -19,7 +19,7 @@ router.get("/", function(req, res){
 		// Get the matching campgrounds from DB
         Campground.find({name: regex}, function(err, matchedCampgrounds){
            if(matchedCampgrounds.length < 1 || err){
-               req.flash("error","No matches please try against");
+               req.flash("error","No matches please try again");
 			   return res.redirect("/");
            } else {
               	res.render("campgrounds/index",{campgrounds:matchedCampgrounds});
