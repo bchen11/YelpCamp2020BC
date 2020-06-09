@@ -17,12 +17,11 @@ var commentRoutes = require("./routes/comments"),
 	campgroundRoutes = require("./routes/campgrounds"),
 	indexRoutes		 = require("./routes/index");
 
-console.log(process.env.DATABASEURL);
+
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/yelp_camp"); // local database
-//mongoose.connect("mongodb+srv://bchen11:Aa26565157@cluster0-ra34u.mongodb.net/yelp_camp?retryWrites=true&w=majority"); // Mongodb Atlas
+mongoose.connect(process.env.DATABASEURL);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
