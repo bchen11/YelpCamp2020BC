@@ -5,18 +5,36 @@ var Comment	   = require("../models/comment");
 var middleware = require("../middleware");
 
 
+// Define escapeRegex function for search feature
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 
 
 //INDEX - show all campgrounds
 router.get("/", function(req, res){
-    // Get all campgrounds from DB
-    Campground.find({}, function(err, allCampgrounds){
-       if(err){
-           console.log(err);
-       } else {
-          res.render("campgrounds/index",{campgrounds:allCampgrounds});
-       }
-    });
+	if(req.query.search){
+		const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+		// Get the matching campgrounds from DB
+        Campground.find({name: regex}, function(err, matchedCampgrounds){
+           if(matchedCampgrounds.length < 1 || err){
+               req.flash("error","No matches please try against");
+			   return res.redirect("/");
+           } else {
+              	res.render("campgrounds/index",{campgrounds:matchedCampgrounds});
+              }
+        });
+	}else{
+		// Get all campgrounds from DB
+		Campground.find({}, function(err, allCampgrounds){
+		   if(err){
+			   console.log(err);
+		   } else {
+			  res.render("campgrounds/index",{campgrounds:allCampgrounds});
+		   }
+		});
+	}
 });
 
 //CREATE - add new campground to DB
