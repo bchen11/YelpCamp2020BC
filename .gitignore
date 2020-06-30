@@ -1,3 +1,4 @@
 goorm.manifest
 /node_modules
-pacage-lock.json
+pacakage-lock.json
+seed.js
